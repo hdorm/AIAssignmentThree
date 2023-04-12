@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class Test extends JPanel {
+public class AIAssignmentThree extends JPanel {
 
     public static BufferedImage originalImageOne;
     public static BufferedImage originalImageTwo;
@@ -19,11 +19,11 @@ public class Test extends JPanel {
     static {
         try {
             originalImageOne = ImageIO.read(Objects.requireNonNull
-                    (Test.class.getResource("/resources/images/NoisyImageOne.png")));
+                    (AIAssignmentThree.class.getResource("/resources/images/NoisyImageOne.png")));
             originalImageTwo = ImageIO.read(Objects.requireNonNull
-                    (Test.class.getResource("/resources/images/NoisyImageTwo.png")));
+                    (AIAssignmentThree.class.getResource("/resources/images/NoisyImageTwo.png")));
             originalImageThree = ImageIO.read(Objects.requireNonNull
-                    (Test.class.getResource("/resources/images/NoisyImageThree.png")));
+                    (AIAssignmentThree.class.getResource("/resources/images/NoisyImageThree.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -63,51 +63,42 @@ public class Test extends JPanel {
         Color seven;
         Color eight;
         Color nine;
-        int X = 3;
-        int Y = 3;
-        boolean cont = true;
-        while (cont) {
-            five = new Color(currentImage.getRGB(X, Y));
-            one = new Color(currentImage.getRGB(X - 1, Y + 1));
-            two = new Color(currentImage.getRGB(X, Y + 1));
-            three = new Color(currentImage.getRGB(X + 1, Y + 1));
-            four = new Color(currentImage.getRGB(X - 1, Y));
-            six = new Color(currentImage.getRGB(X + 1, Y));
-            seven = new Color(currentImage.getRGB(X - 1, Y - 1));
-            eight = new Color(currentImage.getRGB(X, Y - 1));
-            nine = new Color(currentImage.getRGB(X - 1, Y - 1));
-            colors.add(0, one);
-            colors.add(1, two);
-            colors.add(2, three);
-            colors.add(3, four);
-            colors.add(4, five);
-            colors.add(5, six);
-            colors.add(6, seven);
-            colors.add(7, eight);
-            colors.add(8, nine);
-            for (int i = 0; i < 9; i++) {
-                currentColor = colors.get(i);
-                avgRed += currentColor.getRed();
-                avgGreen += currentColor.getGreen();
-                avgBlue += currentColor.getBlue();
+        for (int i = 1; i < entireX - 1; i++) {
+            for (int j = 1; j < entireY - 1; j++) {
+                five = new Color(currentImage.getRGB(i, j));
+                one = new Color(currentImage.getRGB(i - 1, j + 1));
+                two = new Color(currentImage.getRGB(i, j + 1));
+                three = new Color(currentImage.getRGB(i + 1, j + 1));
+                four = new Color(currentImage.getRGB(i - 1, j));
+                six = new Color(currentImage.getRGB(i + 1, j));
+                seven = new Color(currentImage.getRGB(i - 1, j - 1));
+                eight = new Color(currentImage.getRGB(i, j - 1));
+                nine = new Color(currentImage.getRGB(i - 1, j - 1));
+                colors.add(0, one);
+                colors.add(1, two);
+                colors.add(2, three);
+                colors.add(3, four);
+                colors.add(4, five);
+                colors.add(5, six);
+                colors.add(6, seven);
+                colors.add(7, eight);
+                colors.add(8, nine);
+                for (int h = 0; h < 9; h++) {
+                    currentColor = colors.get(h);
+                    avgRed += currentColor.getRed();
+                    avgGreen += currentColor.getGreen();
+                    avgBlue += currentColor.getBlue();
+                }
+                avgRed = avgRed / 9;
+                avgGreen = avgGreen / 9;
+                avgBlue = avgBlue / 9;
+                newColor = new Color(avgRed, avgGreen, avgBlue);
+                currentImage.setRGB(i, j, newColor.getRGB());
+                colors.clear();
+                avgRed = 0;
+                avgBlue = 0;
+                avgGreen = 0;
             }
-            avgRed = avgRed / 9;
-            avgGreen = avgGreen / 9;
-            avgBlue = avgBlue / 9;
-            newColor = new Color(avgRed, avgGreen, avgBlue);
-            currentImage.setRGB(X, Y, newColor.getRGB());
-            if (X == entireX - 3) {
-                X = 3;
-                Y++;
-            }
-            X++;
-            if ((X + Y) == ((entireX - 3) + (entireY) - 3)) {
-                cont = false;
-            }
-            colors.clear();
-            avgRed = 0;
-            avgBlue = 0;
-            avgGreen = 0;
         }
         return currentImage;
     }
@@ -128,50 +119,41 @@ public class Test extends JPanel {
         Color seven;
         Color eight;
         Color nine;
-        int X = 3;
-        int Y = 3;
-        boolean cont = true;
-        while (cont) {
-            five = new Color(currentImage.getRGB(X, Y));
-            one = new Color(currentImage.getRGB(X - 1, Y + 1));
-            two = new Color(currentImage.getRGB(X, Y + 1));
-            three = new Color(currentImage.getRGB(X + 1, Y + 1));
-            four = new Color(currentImage.getRGB(X - 1, Y));
-            six = new Color(currentImage.getRGB(X + 1, Y));
-            seven = new Color(currentImage.getRGB(X - 1, Y - 1));
-            eight = new Color(currentImage.getRGB(X, Y - 1));
-            nine = new Color(currentImage.getRGB(X - 1, Y - 1));
-            colors.add(0, one);
-            colors.add(1, two);
-            colors.add(2, three);
-            colors.add(3, four);
-            colors.add(4, five);
-            colors.add(5, six);
-            colors.add(6, seven);
-            colors.add(7, eight);
-            colors.add(8, nine);
-            for (int i = 0; i < 9; i++) {
-                currentAddition = 0;
-                Color current = colors.get(i);
-                for (int j = 0; j < 9; j++) {
-                    currentAddition += Math.pow((current.getRed() - colors.get(j).getRed()), 2)
-                            + Math.pow((current.getGreen() - colors.get(j).getGreen()), 2)
-                            + Math.pow((current.getBlue() - colors.get(j).getBlue()), 2);
+        for (int i = 1; i < entireX - 1; i++) {
+            for (int j = 1; j < entireY - 1; j++) {
+                five = new Color(currentImage.getRGB(i, j));
+                one = new Color(currentImage.getRGB(i - 1, j + 1));
+                two = new Color(currentImage.getRGB(i, j + 1));
+                three = new Color(currentImage.getRGB(i + 1, j + 1));
+                four = new Color(currentImage.getRGB(i - 1, j));
+                six = new Color(currentImage.getRGB(i + 1, j));
+                seven = new Color(currentImage.getRGB(i - 1, j - 1));
+                eight = new Color(currentImage.getRGB(i, j - 1));
+                nine = new Color(currentImage.getRGB(i - 1, j - 1));
+                colors.add(0, one);
+                colors.add(1, two);
+                colors.add(2, three);
+                colors.add(3, four);
+                colors.add(4, five);
+                colors.add(5, six);
+                colors.add(6, seven);
+                colors.add(7, eight);
+                colors.add(8, nine);
+                for (int h = 0; h < 9; h++) {
+                    currentAddition = 0;
+                    Color current = colors.get(h);
+                    for (int k = 0; k < 9; k++) {
+                        currentAddition += Math.pow((current.getRed() - colors.get(k).getRed()), 2)
+                                + Math.pow((current.getGreen() - colors.get(k).getGreen()), 2)
+                                + Math.pow((current.getBlue() - colors.get(k).getBlue()), 2);
+                    }
+                    median.add(h, currentAddition);
                 }
-                median.add(i, currentAddition);
+                int minColor = median.indexOf(Collections.min(median));
+                currentImage.setRGB(i, j, colors.get(minColor).getRGB());
+                median.clear();
+                colors.clear();
             }
-            int minColor = median.indexOf(Collections.min(median));
-            currentImage.setRGB(X, Y, colors.get(minColor).getRGB());
-            if (X == entireX - 3) {
-                X = 3;
-                Y++;
-            }
-            X++;
-            if ((X + Y) == ((entireX - 3) + (entireY) - 3)) {
-                cont = false;
-            }
-            median.clear();
-            colors.clear();
         }
         return currentImage;
     }
@@ -182,7 +164,6 @@ public class Test extends JPanel {
         int entireY = currentImage.getHeight();
         int[][] colorsOfEdges = new int[entireX][entireY];
         int maxGradient = -1;
-
         for (int i = 1; i < entireX - 1; i++) {
             for (int j = 1; j < entireY - 1; j++) {
                 Color color00 = new Color(currentImage.getRGB(i - 1, j - 1));
@@ -205,13 +186,11 @@ public class Test extends JPanel {
                         + ((-2 * val10) + (2 * val12))
                         + ((-1 * val20) + (val22));
                 int gy = ((-1 * val00) + (-2 * val01) + (-1 * val02)) + ((val20) + (2 * val21) + (val22));
-                double gval = Math.sqrt((gx * gx) + (gy * gy));
-                int g = (int) gval;
-
+                double gVal = Math.sqrt((gx * gx) + (gy * gy));
+                int g = (int) gVal;
                 if (maxGradient < g) {
                     maxGradient = g;
                 }
-
                 colorsOfEdges[i][j] = g;
             }
         }
@@ -308,18 +287,18 @@ public class Test extends JPanel {
         g.drawImage(originalImageOne, 0, 0, 250, 250, this);
         g.drawImage(originalImageTwo, 250, 0, 250, 250, this);
         g.drawImage(originalImageThree, 500, 0, 250, 250, this);
-        g.drawImage(meanFilter(originalImageOne), 0, 250, 250, 250, this);
+        g.drawImage(medianFilter(originalImageOne), 0, 250, 250, 250, this);
         g.drawImage(medianFilter(originalImageTwo), 250, 250, 250, 250, this);
         g.drawImage(meanFilter(originalImageThree), 500, 250, 250, 250, this);
-        g.drawImage(sobelEdgeDetection(meanFilter(originalImageOne)), 0, 500, 250, 250, this);
-        g.drawImage(robertsEdgeDetection(medianFilter(originalImageTwo)), 250, 500, 250, 250, this);
-        g.drawImage(sobelEdgeDetection(meanFilter(originalImageThree)), 500, 500, 250, 250, this);
+        g.drawImage(sobelEdgeDetection(medianFilter(originalImageOne)), 0, 500, 250, 250, this);
+        g.drawImage(sobelEdgeDetection(medianFilter(originalImageTwo)), 250, 500, 250, 250, this);
+        g.drawImage(robertsEdgeDetection(meanFilter(originalImageThree)), 500, 500, 250, 250, this);
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setTitle("Image Denoiser and Edge Detector");
-        frame.getContentPane().add(new Test());
+        frame.getContentPane().add(new AIAssignmentThree());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1920, 1080);
         frame.setVisible(true);
